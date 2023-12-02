@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { parseLines, minCubesForGame, powerForGame } from './lib/games'
+import { sum } from '../lib/util';
 
 if (process.argv.length < 3) {
   console.log('Please provide a file path');
@@ -21,6 +22,6 @@ const processedGames = gameData.map(game => {
 
 // console.log(JSON.stringify(processedGames,null,2))
 
-const output = processedGames.map(g => g.power).reduce((sum, n) => sum+n, 0)
+const output = sum(processedGames.map(g => g.power))
 console.log(output)
 

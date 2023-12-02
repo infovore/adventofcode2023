@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { parseLines, filterGames } from './lib/games'
+import { sum } from '../lib/util';
 
 if (process.argv.length < 3) {
   console.log('Please provide a file path');
@@ -13,6 +14,6 @@ const gameData = parseLines(lines)
 const matchingGames = filterGames(gameData, {red: 12, green: 13, blue: 14})
 // console.log(matchingGames)
 
-const output = matchingGames.map(g => g.game).reduce((sum, n) => sum+n, 0)
+const output = sum(matchingGames.map(g => g.game))
 
 console.log(output)
