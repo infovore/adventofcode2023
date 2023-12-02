@@ -53,3 +53,17 @@ export const filterGames = (games: Game[], parameters:Draw) => {
     return true;
   })
 }
+export const minCubesForGame = (game: Game) => {
+  const red = Math.max(...game.draws.map(draw => draw.red || 0))
+  const green = Math.max(...game.draws.map(draw => draw.green || 0))
+  const blue = Math.max(...game.draws.map(draw => draw.blue || 0))
+
+  return {red,green,blue}
+}
+
+export const powerForGame = (game: Game) => {
+  const minCubes = minCubesForGame(game)
+  const scores = [minCubes.red, minCubes.green, minCubes.blue].filter(n => n > 0)
+
+  return scores.reduce((product, n) => product * n,1)
+}
