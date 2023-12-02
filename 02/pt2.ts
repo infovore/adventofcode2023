@@ -10,14 +10,12 @@ const filePath = process.argv[2]; // Assuming the file path is passed as the fir
 const lines = fs.readFileSync(filePath).toString().split('\n');
 
 const gameData = parseLines(lines)
-// const matchingGames = filterGames(gameData, {red: 12, green: 13, blue: 14})
-// console.log(matchingGames)
 
-const processedGames = gameData.map(g => {
+const processedGames = gameData.map(game => {
   return {
-    ...g,
-    minCubes: minCubesForGame(g),
-    power: powerForGame(g),
+    ...game,
+    minCubes: minCubesForGame(game),
+    power: powerForGame(game),
   }
 })
 
