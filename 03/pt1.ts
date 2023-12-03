@@ -73,7 +73,7 @@ schematicCells.forEach((row, y) => {
             numString = schematicCells[y+offsetY][x+offsetX+neighbourOffset].content + numString
             neighbourOffset--
           }
-          if(schematicCells[y+offsetY][x+offsetX+neighbourOffset]) {
+          if(schematicCells[y+offsetY][x+offsetX+neighbourOffset+1]) {
             schematicCells[y+offsetY][x+offsetX+neighbourOffset+1].isPartNumberOrigin = true
             schematicCells[y+offsetY][x+offsetX+neighbourOffset+1].partNumber = parseInt(numString)
           }
@@ -111,5 +111,6 @@ const partNumbers = schematicCells
                     .flat()
                     .map(cell => cell.partNumber as number)
 
+console.log(partNumbers)
 console.log();
 console.log("Sum of all part numbers:", sum(partNumbers))
