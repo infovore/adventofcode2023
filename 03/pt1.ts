@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import kleur from 'kleur';
+import { sum } from '../lib/util';
 
 if (process.argv.length < 3) {
   console.log('Please provide a file path');
@@ -102,4 +103,13 @@ const drawSchematic = (cells: Cell[][]) => {
     process.stdout.write('\n')
   })
 }
+
 drawSchematic(schematicCells);
+
+const partNumbers = schematicCells
+                    .map(row => row.filter(cell => cell.isPartNumberOrigin))
+                    .flat()
+                    .map(cell => cell.partNumber as number)
+
+console.log();
+console.log("Sum of all part numbers:", sum(partNumbers))
