@@ -78,10 +78,12 @@ schematicCells.forEach((row, y) => {
             neighbourOffset--
           }
           let originCell = (schematicCells[y+offsetY][x+offsetX+neighbourOffset+1])
-          if(originCell && cell.isGear) {
+          if(originCell) {
             originCell.isPartNumberOrigin = true;
             originCell.partNumber = parseInt(numString)
-            cell.ratios = [...new Set([originCell, ...cell.ratios])]
+            if(cell.isGear) {
+              cell.ratios = [...new Set([originCell, ...cell.ratios])]
+            }
           }
         }
       }
