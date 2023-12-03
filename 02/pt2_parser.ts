@@ -38,10 +38,10 @@ s.addOperation('process', {
     }
   },
   Draws(list,_) {
-    const processed = list.process()
-    const h = {}
-    processed.forEach(draw => h[draw[0]] = draw[1])
-    return h
+    return list.process().reduce((draws, [color,count]) => {
+      draws[color] = count
+      return draws
+    },{})
   },
   Draw(count,color,_) {
     return [color.sourceString, parseInt(count.sourceString)]
