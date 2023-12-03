@@ -1,3 +1,5 @@
+import { product } from "../../lib/util"
+
 export type Draw = {
   red?: number,
   blue?: number,
@@ -65,5 +67,5 @@ export const powerForGame = (game: Game) => {
   const minCubes = minCubesForGame(game)
   const scores = [minCubes.red, minCubes.green, minCubes.blue].filter(n => n > 0)
 
-  return scores.reduce((product, n) => product * n,1)
+  return product(scores)
 }
