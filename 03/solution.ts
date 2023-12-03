@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import kleur from 'kleur';
-import { sum } from '../lib/util';
+import { sum, product } from '../lib/util';
 
 if (process.argv.length < 3) {
   console.log('Please provide a file path');
@@ -14,11 +14,13 @@ type Cell = {
   x: number;
   y: number;
   isPart: boolean;
+  isGear: boolean;
   hasPartNumber: boolean;
   isPartNumber: boolean;
   isPartNumberOrigin: boolean;
   partNumber?: number;
-}
+  ratios: Cell[];
+};
 
 const schematicToCells = (schematic: string[][]) => {
   return schematic.map((row, y) => {
@@ -28,10 +30,12 @@ const schematicToCells = (schematic: string[][]) => {
           x,
           y,
           isPart: !!cell.match(/[^\d\.]/),
+          isGear: !!cell.match(/\*/),
           hasPartNumber: false,
           isPartNumber: false,
           isPartNumberOrigin: false,
           partNumber: undefined,
+          ratios: []
       } as Cell
     })
   })
@@ -73,9 +77,11 @@ schematicCells.forEach((row, y) => {
             numString = schematicCells[y+offsetY][x+offsetX+neighbourOffset].content + numString
             neighbourOffset--
           }
-          if(schematicCells[y+offsetY][x+offsetX+neighbourOffset+1]) {
-            schematicCells[y+offsetY][x+offsetX+neighbourOffset+1].isPartNumberOrigin = true
-            schematicCells[y+offsetY][x+offsetX+neighbourOffset+1].partNumber = parseInt(numString)
+          let originCell = (schematicCells[y+offsetY][x+offsetX+neighbourOffset+1])
+          if(originCell && cell.isGear) {
+            originCell.isPartNumberOrigin = true;
+            originCell.partNumber = parseInt(numString)
+            cell.ratios = [...new Set([originCell, ...cell.ratios])]
           }
         }
       }
@@ -86,7 +92,9 @@ schematicCells.forEach((row, y) => {
 const drawSchematic = (cells: Cell[][]) => {
   cells.forEach((row, y) => {
     row.forEach((cell, x) => {
-      if(cell.isPart) {
+      if(cell.isGear) {
+        process.stdout.write(kleur.magenta(cell.content))
+      } else if(cell.isPart) {
         if(cell.hasPartNumber) {
           process.stdout.write(kleur.green(cell.content))
         } else {
@@ -107,10 +115,14 @@ const drawSchematic = (cells: Cell[][]) => {
 drawSchematic(schematicCells);
 
 const partNumbers = schematicCells
-                    .map(row => row.filter(cell => cell.isPartNumberOrigin))
                     .flat()
+                    .filter(cell => cell.isPartNumberOrigin)
                     .map(cell => cell.partNumber as number)
 
-console.log(partNumbers)
-console.log();
+const gearRatios = schematicCells
+                    .flat()
+                    .filter(cell => cell.isGear && cell.ratios.length >= 2)
+                    .map(cell => product(cell.ratios.map(c => c.partNumber as number)))
+
 console.log("Sum of all part numbers:", sum(partNumbers))
+console.log("Sum of all gear ratios:", sum(gearRatios))
