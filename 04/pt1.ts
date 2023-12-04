@@ -17,8 +17,7 @@ const games = lines.map(line => {
 
   const intersection = entry.filter(n => winning.includes(n))
   let score = 0;
-  if(intersection.length === 1) score = 1;
-  if(intersection.length > 1) score = Math.pow(2, intersection.length - 1)
+  if(intersection.length > 0) score = Math.pow(2, intersection.length - 1)
 
   return {
     winning,
