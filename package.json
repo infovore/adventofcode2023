@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cli-progress": "^3.12.0",
     "kleur": "^4.1.5",
     "ohm-js": "^17.1.0",
+    "progress-bar-cli": "^1.0.4",
     "tsx": "^4.6.1"
   }
 }
