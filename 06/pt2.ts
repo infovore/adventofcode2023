@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { product } from '../lib/util';
 
 if (process.argv.length < 3) {
   console.log('Please provide a file path');
@@ -19,6 +20,6 @@ const output = times.map((timeLimit,i) => {
     return s*t;
   })
   return results.filter(r => r > minDistance).length
-}).reduce((a,b) => a*b,1)
+})
 
-console.log(output)
+console.log(product(output))

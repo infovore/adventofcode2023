@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import { product } from '../lib/util';
 
 if (process.argv.length < 3) {
   console.log('Please provide a file path');
@@ -14,14 +15,11 @@ const distances = distanceString.split(/\s+/).filter(n => n.match(/\d+/)).map(n 
 
 const output = times.map((timeLimit,i) => {
   const minDistance = distances[i];
-  // const results = [...Array.from(Array(timeLimit))]
-    // console.log(results)
   const results = [...Array.from(Array(timeLimit))].map((_,s) => {
     const t = timeLimit - s;
-    // console.log(t,s)
     return s*t;
   })
   return results.filter(r => r > minDistance).length
-}).reduce((a,b) => a*b,1)
+})
 
-console.log(output)
+console.log(product(output))
