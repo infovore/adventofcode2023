@@ -15,11 +15,13 @@ const distances = [distanceString.split("").filter(n => n.match(/\d/)).join("")]
 
 const output = times.map((timeLimit,i) => {
   const minDistance = distances[i];
-  const results = [...Array.from(Array(timeLimit))].map((_,s) => {
+  const n = timeLimit % 2=== 0 ? timeLimit/2 +1 : timeLimit/2
+  const results = [...Array.from(Array(Math.round(n)))].map((_,s) => {
     const t = timeLimit - s;
     return s*t;
   })
-  return results.filter(r => r > minDistance).length
+  const offset = timeLimit % 2 === 0 ? 1 : 0
+  return results.filter(r => r > minDistance).length * 2 - offset
 })
 
 console.log(product(output))
