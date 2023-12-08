@@ -7,11 +7,11 @@ if (process.argv.length < 3) {
 }
 
 type Hand = {
-  originalCards: string;
   cards: string[];
   bid: number;
   score?: any;
   rank?: number;
+  finalRank?: number;
 }
 const cardRanks = ["J", "2", "3", "4", "5", "6", "7", "8", "9", "T", "Q","K", "A"]
 const scoreRanks = [
@@ -75,5 +75,5 @@ const rankHands = (scoredHands:Hand[]) => {
 const scoredHands = scoreHands(hands);
 const rankedHands = rankHands(scoredHands);
 
-rankedHands.reverse().forEach(h => console.log(`${h.cards.join("")} ${h.bid}`))
+[...rankedHands].reverse().forEach(h => console.log(`${h.cards.join("")} ${h.bid}`))
 console.log(sum(rankedHands.map(h => h.finalRank*h.bid)))
